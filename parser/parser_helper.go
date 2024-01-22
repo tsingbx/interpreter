@@ -2,11 +2,11 @@ package parser
 
 import (
 	"fmt"
-	"slices"
 
 	"github.com/tsingbx/interpreter/token"
 )
 
+/*
 func (p *Paser) skipToToken(s ...token.TokenType) {
 	notTokenTypeFun := func(e token.TokenType) bool {
 		return e != p.curToken.Type
@@ -18,7 +18,7 @@ func (p *Paser) skipToToken(s ...token.TokenType) {
 		}
 		p.nextToken()
 	}
-}
+}*/
 
 func (p *Paser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
