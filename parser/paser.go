@@ -83,7 +83,7 @@ func (p *Paser) ParseProgram() *ast.Program {
 	program.Statements = []ast.Statement{}
 	for !p.curTokenIs(token.EOF) {
 		stmt := p.parseStatement()
-		if stmt.String() != "" {
+		if stmt != nil {
 			program.Statements = append(program.Statements, stmt)
 		}
 		p.nextToken()
@@ -180,7 +180,7 @@ func (p *Paser) parseBlockStatement() *ast.BlockStatement {
 	p.nextToken()
 	for !p.curTokenIs(token.RBRACE) && !p.curTokenIs(token.EOF) {
 		stmt := p.parseStatement()
-		if stmt.String() != "" {
+		if stmt != nil {
 			block.Statements = append(block.Statements, stmt)
 		}
 		p.nextToken()
@@ -209,19 +209,27 @@ func (p *Paser) parseStatement() ast.Statement {
 }
 
 func (p *Paser) parseLetStatement() *ast.LetStatement {
+
 	stmt := &ast.LetStatement{Token: p.curToken}
+
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
+
 	stmt.Name = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
 	}
+
 	p.nextToken()
+
 	stmt.Value = p.parseExpression(LOWEST)
+
 	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
+
 	return stmt
 }
 
